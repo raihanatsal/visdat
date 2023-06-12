@@ -105,4 +105,4 @@ date_range_slider.js_link("value", bokeh_p.x_range, "end", attr_selector=1)
 
 
 # Render plot Bokeh menggunakan Streamlit
-st.bokeh_chart(column(menu, date_range_slider, bar_plot, bokeh_p))
+st.bokeh_chart(column(menu, bar_plot, date_range_slider, bokeh_p))
