@@ -76,17 +76,16 @@ bar_plot.js_on_event('tap', CustomJS(args=dict(source=bar_plot.select(ColumnData
         menu.dispatchEvent(new Event('change'));
     }
 """))
-
+# Menu interaksi pada Location
 menu = Select(options=Location_list, value='Jawa Barat', title='Location')  
-bokeh_p = figure(x_axis_label='Date', y_axis_label='Total Active Cases', y_axis_type="linear",
+bokehlinep = figure(x_axis_label='Date', y_axis_label='Total Active Cases', y_axis_type="linear",
                  x_axis_type="datetime")  
-bokeh_p.line(x='Date', y='Total Cases', color='yellow', legend_label="Total Kasus", source=Curr)
-bokeh_p.line(x='Date', y='Total Deaths', color='pink', legend_label="Total Kematian", source=Curr)
-bokeh_p.line(x='Date', y='Total Recovered', color='purple', legend_label="Total Sembuh", source=Curr)
-bokeh_p.line(x='Date', y='Total Active Cases', color='orange', legend_label="Total Kasus Aktif", source=Curr)
-bokeh_p.legend.location = "top_right"
-
-bokeh_p.add_tools(HoverTool(
+bokehlinep.line(x='Date', y='Total Cases', color='yellow', legend_label="Kasus", source=Curr)
+bokehlinep.line(x='Date', y='Total Deaths', color='pink', legend_label="Kematian", source=Curr)
+bokehlinep.line(x='Date', y='Total Recovered', color='purple', legend_label="Kesembuh", source=Curr)
+bokehlinep.line(x='Date', y='Total Active Cases', color='orange', legend_label="Kasus Aktif", source=Curr)
+bokehlinep.legend.location = "top_right"
+bokehlinep.add_tools(HoverTool(
     tooltips=[
         ('Total Kasus', '@{Total Cases}'),
         ('Total Kematian', '@{Total Deaths}'),
@@ -95,16 +94,12 @@ bokeh_p.add_tools(HoverTool(
     ],
     mode='mouse'
 ))
-
+# Menu interaksi pada Slider
 menu.js_on_change('value', callback)
-
-date_range_slider = DateRangeSlider(value=(min(df['Date']), max(df['Date'])), start=min(df['Date']),
+tanggal_slider = DateRangeSlider(value=(min(df['Date']), max(df['Date'])), start=min(df['Date']),
                                    end=max(df['Date']))
-
-date_range_slider.js_link("value", bokeh_p.x_range, "start", attr_selector=0)
-date_range_slider.js_link("value", bokeh_p.x_range, "end", attr_selector=1)
-
-
+tanggal_slider.js_link("value", bokehlinep.x_range, "start", attr_selector=0)
+tanggal_slider.js_link("value", bokehlinep.x_range, "end", attr_selector=1)
 
 # Render plot Bokeh menggunakan Streamlit
-st.bokeh_chart(column(bar_plot, menu, date_range_slider, bokeh_p))
+st.bokeh_chart(column(bar_plot, menu, tanggal_slider, bokehlinep))
